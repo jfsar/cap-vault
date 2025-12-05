@@ -6,7 +6,7 @@ import { SessionProvider } from "next-auth/react"
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 
-const inter = Inter({subsets: ['latin']});
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {

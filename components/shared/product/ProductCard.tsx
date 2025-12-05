@@ -16,6 +16,7 @@ function ProductCard({ product }: { product: Product; }) {
                 width={300} 
                 height={300}
                 priority={true}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="w-full object-cover object-center border-b"
             />
          </Link>

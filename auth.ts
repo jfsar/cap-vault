@@ -4,6 +4,7 @@ import { neon } from "@neondatabase/serverless";
 import Credentials from "next-auth/providers/credentials"
 import { verifyPassword } from './lib/utils';
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -89,8 +90,41 @@ export const config = {
                         if (result.length === 0) {
                            throw new Error('User not found');
                         }
+
+                       
+                        
                     } catch (error) {
                         throw error;
+                    }
+                }
+
+                if (trigger === 'signIn' || trigger === 'signUp') { 
+                    const cookiesObject = await cookies();
+                    const sessionCartId = cookiesObject.get('sessionCartId')?.value;
+                    if (sessionCartId) { 
+                        // Find session cart
+                        const sessionCartResult = await sql`
+                        SELECT * FROM "Cart"
+                        WHERE "sessionCartId" = ${sessionCartId}
+                        LIMIT 1
+                        `;
+
+                        const sessionCart = sessionCartResult[0];
+
+                        if (sessionCart) {
+                        // Delete current user cart
+                        await sql`
+                            DELETE FROM "Cart"
+                            WHERE "userId" = ${user.id}
+                        `;
+                        
+                        // Assign new cart (update session cart with user ID)
+                        await sql`
+                            UPDATE "Cart"
+                            SET "userId" = ${user.id}
+                            WHERE "id" = ${sessionCart.id}
+                        `;
+                        }
                     }
                 }
             }
@@ -98,6 +132,23 @@ export const config = {
             return token;
         },
         authorized: async ({ request, auth }) => { 
+            // Array of regex patterns of paths we want to protect
+            const protectedPaths = [
+              /\/shipping-address/,
+              /\/payment-method/,
+              /\/place-order/,
+              /\/profile/,
+              /\/user\/(.*)/,
+              /\/order\/(.*)/,
+              /\/admin/,
+            ];
+            
+            // get path name from req URL object
+            const { pathname } = request.nextUrl;
+
+            // check if user is not authenticated && accessing a protected path
+            if (!auth && protectedPaths.some((p) => p.test(pathname))) return false;
+
             // Check for session cart cookie
             if (!request.cookies.get('sessionCartId')) {
 

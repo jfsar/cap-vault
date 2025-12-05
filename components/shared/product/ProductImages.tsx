@@ -15,6 +15,7 @@ function ProductImages({ images }: { images: string[] }) {
               alt="product image"
               fill
               className="object-center"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
           <div className="flex">
@@ -27,7 +28,7 @@ function ProductImages({ images }: { images: string[] }) {
                           currentIndex === index && 'border-orange-500'
                       )}
                   >
-                      <Image src={img} alt="image" fill className="object-center"/>
+                      <Image src={img} alt="image" fill className="object-center" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"/>
                   </div>
               ))}
           </div>

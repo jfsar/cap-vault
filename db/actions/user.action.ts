@@ -1,10 +1,11 @@
 'use server';
 
 import prisma from "@/lib/prima-client";
-import { signInSchema, signUpFormSchema } from "@/types/validator";
-import { signIn, signOut } from "@/auth";
+import { shippingAddressSchema, signInSchema, signUpFormSchema } from "@/types/validator";
+import { auth, signIn, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { formatErrors, hashedPassword } from "@/lib/utils";
+import { ShippingAddress } from "@/types";
 
 
 export async function signInWithCredentials(prevState: unknown, formData: FormData) {
@@ -76,3 +77,36 @@ export async function getUserById(userId: string) {
     
     return user;
 }
+
+export async function updateUserAddress(data: ShippingAddress) {
+    try {
+        const session = await auth();
+
+        const currentUser = await prisma.user.findUnique({
+            where: {
+                id: session?.user?.id,
+            }
+        });
+
+        if (!currentUser) throw new Error('User not found.');
+
+        const address = shippingAddressSchema.parse(data);
+
+        await prisma.user.update({
+            where: {
+                id: currentUser.id
+            },
+            data: {
+                address
+            }
+        });
+
+        return {
+            success: true,
+            message: 'Address successfully updated.'
+        };
+
+    } catch (error) {
+        return formatErrors(error);
+    }
+ }
