@@ -1,11 +1,11 @@
 'use server';
 
 import prisma from "@/lib/prima-client";
-import { shippingAddressSchema, signInSchema, signUpFormSchema } from "@/types/validator";
+import { paymentMethodsScehma, shippingAddressSchema, signInSchema, signUpFormSchema } from "@/types/validator";
 import { auth, signIn, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { formatErrors, hashedPassword } from "@/lib/utils";
-import { ShippingAddress } from "@/types";
+import { PaymentMethodType, ShippingAddress } from "@/types";
 
 
 export async function signInWithCredentials(prevState: unknown, formData: FormData) {
@@ -109,4 +109,34 @@ export async function updateUserAddress(data: ShippingAddress) {
     } catch (error) {
         return formatErrors(error);
     }
- }
+}
+ 
+// Update user payment method
+export async function updateUserPaymentMethod(data: PaymentMethodType) { 
+    try {
+        const session = await auth();
+
+        const currentUser = await prisma.user.findUnique({
+            where: {
+                id: session?.user?.id
+            }
+        });
+
+        if (!currentUser) throw new Error('User not found.');
+
+        const paymentMethod = paymentMethodsScehma.parse(data);
+
+        await prisma.user.update({
+            where: { id: currentUser.id },
+            data: { paymentMethod: paymentMethod.type }
+        });
+
+        return {
+            success: true,
+            message: 'User payment method updated successfully.'
+        };
+
+    } catch (error) {
+        return formatErrors(error);
+    }
+}

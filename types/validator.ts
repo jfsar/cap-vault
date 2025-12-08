@@ -1,3 +1,4 @@
+import { PAYMENT_METHODS } from '@/lib/constants';
 import { formatNumberWithDecimal } from '@/lib/utils';
 import { z } from 'zod';
 
@@ -73,4 +74,12 @@ export const shippingAddressSchema = z.object({
   country: z.string().min(3, 'Country must be at least 3 characters'),
   lat: z.number().optional(),
   lng: z.number().optional(),
+});
+
+// Schema for payment methods
+export const paymentMethodsScehma = z.object({
+  type: z.string().min(1, 'Payment method is required.'),
+}).refine((data) => PAYMENT_METHODS.includes(data.type), {
+  path: ["type"],
+  error: "Invalid payment method."
 });
