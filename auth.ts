@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
 import { neon } from "@neondatabase/serverless";
+import prisma from './lib/prima-client';
 import Credentials from "next-auth/providers/credentials"
 import { verifyPassword } from './lib/utils';
 import { NextResponse } from 'next/server';
@@ -22,15 +23,7 @@ export const config = {
 
                 //find user from the database
                 try {
-                    const users = await sql`
-                        SELECT id, email, name, role, password 
-                        FROM "User"
-                        WHERE email = ${(credentials.email as string)}
-                    `;
-
-                    if (users.length === 0) return null;
-
-                     const user = users[0];
+                    const user = await prisma.user.findFirst({ where: {email: credentials.email as string} });
 
                     //check if user exists and password matches
                     if (user && user.password) {
@@ -78,24 +71,10 @@ export const config = {
                 if (user.name === 'NO_NAME') { 
                     token.name = user.email!.split('@')[0];
                     // update the db to reflect the token name
-                    try {
-                        const result = await sql`
-                        UPDATE "User"
-                        SET 
-                            name = ${token.name}
-                            WHERE id = ${user.id}
-                            RETURNING id, name, email
-                        `;
-    
-                        if (result.length === 0) {
-                           throw new Error('User not found');
-                        }
-
-                       
-                        
-                    } catch (error) {
-                        throw error;
-                    }
+                    await prisma.user.update({
+                        where: { id: user.id },
+                        data: { name: token.name },
+                    });
                 }
 
                 if (trigger === 'signIn' || trigger === 'signUp') { 
@@ -103,28 +82,22 @@ export const config = {
                     const sessionCartId = cookiesObject.get('sessionCartId')?.value;
                     if (sessionCartId) { 
                         // Find session cart
-                        const sessionCartResult = await sql`
-                        SELECT * FROM "Cart"
-                        WHERE "sessionCartId" = ${sessionCartId}
-                        LIMIT 1
-                        `;
-
-                        const sessionCart = sessionCartResult[0];
-
-                        if (sessionCart) {
-                        // Delete current user cart
-                        await sql`
-                            DELETE FROM "Cart"
-                            WHERE "userId" = ${user.id}
-                        `;
-                        
-                        // Assign new cart (update session cart with user ID)
-                        await sql`
-                            UPDATE "Cart"
-                            SET "userId" = ${user.id}
-                            WHERE "id" = ${sessionCart.id}
-                        `;
-                        }
+                        const sessionCart = await prisma.cart.findFirst({
+                            where: { sessionCartId },
+                          });
+              
+                          if (sessionCart) {
+                            // Delete current user cart
+                            await prisma.cart.deleteMany({
+                              where: { userId: user.id },
+                            });
+              
+                            // Assign new cart
+                            await prisma.cart.update({
+                              where: { id: sessionCart.id },
+                              data: { userId: user.id },
+                            });
+                          }
                     }
                 }
             }

@@ -2,11 +2,12 @@
 
 import { auth } from "@/auth";
 import prisma from "@/lib/prima-client";
-import { formatErrors } from "@/lib/utils";
+import { convertToPlainObject, formatErrors } from "@/lib/utils";
 import { getMyCart } from "./cart.action";
 import { getUserById } from "./user.action";
 import { insertOrderSchema } from "@/types/validator";
 import { CartItem } from "@/types";
+import { Prisma } from "@/lib/generated/prisma/client";
 
 // Create order and order items
 export async function createOrder() { 
@@ -50,6 +51,7 @@ export async function createOrder() {
         });
 
         // create a transaction to create order and order items in database
+        //@ts-ignore
         const newOrderId = await prisma.$transaction(async (tx) => { 
             // create order
             const insertedOrder = await tx.order.create({ data: order });
@@ -66,7 +68,7 @@ export async function createOrder() {
             }
 
             // clear or update items in cart
-            await prisma.cart.update({
+            await tx.cart.update({
                 where: {
                     id: cart.id
                 },
@@ -93,4 +95,19 @@ export async function createOrder() {
     } catch (error) {
         return formatErrors(error);
     }
+}
+
+
+export async function getOrderById(orderId: string) { 
+    const order = await prisma.order.findFirst({
+        where: {
+            id: orderId,
+        },
+        include: {
+            orderItems: true,
+            user: { select: { name: true, email: true } },
+        }
+    });
+    
+    return convertToPlainObject(order);
 }
