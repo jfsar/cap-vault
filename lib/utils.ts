@@ -76,6 +76,7 @@ export function formatErrors(error: any | unknown) {
       success: false,
       type: "validation",
       message: combinedErrMsg ?? "Validation failed.",
+      redirectTo: null,
       fieldErrors: mappedFields, // <-- FIELD-LEVEL MAPPING
     };
   }
@@ -86,6 +87,7 @@ export function formatErrors(error: any | unknown) {
         success: false,
         type: "prisma",
         message: "That email is already registered.",
+        redirectTo: null,
         fieldErrors: { email: "This email is already in use." },
       };
   }
@@ -93,6 +95,7 @@ export function formatErrors(error: any | unknown) {
   return {
     success: false,
     type: "unknown",
+    redirectTo: null,
     message: "Something went wrong. Please try again.",
   };
 }
