@@ -6,8 +6,7 @@ import { convertToPlainObject, formatErrors } from "@/lib/utils";
 import { getMyCart } from "./cart.action";
 import { getUserById } from "./user.action";
 import { insertOrderSchema } from "@/types/validator";
-import { CartItem } from "@/types";
-import { Prisma } from "@/lib/generated/prisma/client";
+import { CartItem, ShippingAddress } from "@/types";
 
 // Create order and order items
 export async function createOrder() { 
@@ -108,6 +107,21 @@ export async function getOrderById(orderId: string) {
             user: { select: { name: true, email: true } },
         }
     });
+
+    if (!order) throw new Error('Order not found.');
     
-    return convertToPlainObject(order);
+    return convertToPlainObject({
+        ...order,
+        orderItems: order.orderItems.map((item) => { 
+            return {
+                ...item,
+                price: item.price.toString()
+            }
+        }),
+        shippingAddress: order.shippingAddress as ShippingAddress,
+        itemsPrice: order.itemsPrice.toString(),
+        totalPrice: order.totalPrice.toString(),
+        shippingPrice: order.shippingPrice.toString(),
+        taxPrice: order.taxPrice.toString(),
+    });
 }
