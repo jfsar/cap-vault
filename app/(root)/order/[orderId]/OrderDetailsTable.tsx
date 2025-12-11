@@ -6,9 +6,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { formatDateTime, formatId, formatPrice } from "@/lib/utils";
 import { OrderType } from "@/types";
 import Image from "next/image";
+import { PayPalButtons, PayPalScriptProvider, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import { createPaypalOrder, approvePayPalOrder } from '@/db/actions/order.action';
 import Link from "next/link";
+import { toast } from "sonner";
 
-function OrderDetailsTable({ order }: { order: OrderType }) {
+function OrderDetailsTable({ order, paypalClientId }: { order: OrderType, paypalClientId: string; }) {
   const { 
       orderItems,
       shippingAddress,
@@ -22,6 +25,48 @@ function OrderDetailsTable({ order }: { order: OrderType }) {
       paidAt,
       deliveredAt
   } = order;
+  
+  const PrintLoadingState = () => {
+      const [{ isPending, isRejected }] = usePayPalScriptReducer();
+      let status = "";
+      if (isPending) {
+          status = "Loading PayPal...";
+      } else if (isRejected) { 
+          status = "Error Loading PayPal";
+      }
+
+      return status;
+  }
+  
+ const handleCreatePayPalOrder = async () => { 
+    
+     const result = await createPaypalOrder(order.id);
+
+     if (!result.success) {
+        toast.error(null, {
+            description: result.message,
+            style: {
+                backgroundColor: 'var(--destructive)',
+            }
+        });
+        return;
+     }
+     
+     return result.data;
+ }
+ 
+const handleApprovePayPalOrder = async (data: { orderID: string; }) => {
+    const result = await approvePayPalOrder(order.id, data);
+
+    toast.error(null, {
+        description: result.message,
+        style: {
+            backgroundColor: !result.success ? 'var(--destructive)': '',
+        }
+    });
+} 
+    
+
   
   return (
       <>
@@ -116,6 +161,15 @@ function OrderDetailsTable({ order }: { order: OrderType }) {
                               <div>Total</div>
                               <div>{ formatPrice(Number(totalPrice))} </div>
                           </div>
+                          {/* PayPal Payments */}
+                          {!isPaid && paymentMethod === "PayPal" && (
+                              <div>
+                                  <PayPalScriptProvider options={{ clientId: paypalClientId, currency: 'PHP' }}>
+                                      <PrintLoadingState />
+                                      <PayPalButtons createOrder={handleCreatePayPalOrder} onApprove={handleApprovePayPalOrder} />
+                                  </PayPalScriptProvider>
+                              </div>
+                          )}
                       </CardContent>
                   </Card>
               </div>

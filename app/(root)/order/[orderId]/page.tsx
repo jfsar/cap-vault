@@ -19,7 +19,7 @@ async function OrderDetailsPage({ params }: { params: Promise<{ orderId: string;
  
   return (
     <>
-        <OrderDetailsTable order={order}/>
+      <OrderDetailsTable order={order} paypalClientId={process.env.PAYPAL_CLIENT_ID || 'sb'} />
     </>
   )
 }
