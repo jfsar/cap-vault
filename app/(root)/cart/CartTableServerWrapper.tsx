@@ -1,4 +1,3 @@
-import { delay } from "@/lib/utils";
 import CartTable from "./CartTable";
 import { getMyCart } from "@/db/actions/cart.action";
 
