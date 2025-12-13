@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { APP_DESCRIPTION, APP_NAME, APP_URL } from '@/lib/constants';
-import { SessionProvider } from "next-auth/react"
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -27,7 +26,6 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased`}
       >
-        <SessionProvider>
           <ThemeProvider
             attribute='class'
             enableSystem
@@ -37,7 +35,6 @@ export default function RootLayout({
             {children}
             <Toaster/>
           </ThemeProvider>
-        </SessionProvider>
       </body>
     </html>
   );

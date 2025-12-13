@@ -8,7 +8,8 @@ import {
     paymentMethodsScehma,
     paymentResultSchema,
     shippingAddressSchema,
-    signInSchema
+    signInSchema,
+    updateProfileSchema
 } from './validator'
 
 export type Product = z.infer<typeof insertProductSchema> & {
@@ -38,3 +39,4 @@ export type OrderType = z.infer<typeof insertOrderSchema> & {
 };
 
 export type PaymentResultType = z.infer<typeof paymentResultSchema>;
+export type UpdateProfileType = z.infer<typeof updateProfileSchema>;
