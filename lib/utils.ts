@@ -12,6 +12,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+
+
 export function formatPrice(
   amount: number, 
   currency: string = 'PHP', 
@@ -28,6 +30,13 @@ export function formatPrice(
   return new Intl.NumberFormat(locale, { ...defaultOptions, ...options }).format(amount);
 }
 
+
+// Format Number
+const NUMBER_FORMATTER = new Intl.NumberFormat('en-PH');
+
+export function formatNumber(number: number) {
+  return NUMBER_FORMATTER.format(number);
+}
 
 export function convertToPlainObject<T>(value: T): T {
   return JSON.parse(JSON.stringify(value));
