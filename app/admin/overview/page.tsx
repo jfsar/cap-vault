@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getOrderSummary } from "@/db/actions/order.action";
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 async function AdminOverviewPage() {
-  
+
   await requireAdmin();
 
   const summary = await getOrderSummary();
