@@ -7,11 +7,13 @@ import { formatDateTime, formatId, formatPrice } from "@/lib/utils";
 import { OrderType } from "@/types";
 import Image from "next/image";
 import { PayPalButtons, PayPalScriptProvider, usePayPalScriptReducer } from '@paypal/react-paypal-js';
-import { createPaypalOrder, approvePayPalOrder } from '@/db/actions/order.action';
+import { createPaypalOrder, approvePayPalOrder, updateOrderToPaidCOD, deliverOrder } from '@/db/actions/order.action';
 import Link from "next/link";
 import { toast } from "sonner";
+import { useTransition } from "react";
+import { Button } from "@/components/ui/button";
 
-function OrderDetailsTable({ order, paypalClientId }: { order: OrderType, paypalClientId: string; }) {
+function OrderDetailsTable({ order, paypalClientId, isAdmin }: { order: OrderType, paypalClientId: string; isAdmin?: boolean; }) {
   const { 
       orderItems,
       shippingAddress,
@@ -58,13 +60,63 @@ function OrderDetailsTable({ order, paypalClientId }: { order: OrderType, paypal
 const handleApprovePayPalOrder = async (data: { orderID: string; }) => {
     const result = await approvePayPalOrder(order.id, data);
 
-    toast.error(null, {
+    toast(null, {
         description: result.message,
         style: {
             backgroundColor: !result.success ? 'var(--destructive)': '',
         }
     });
 } 
+
+const MarkAsPaidButton = () => {
+    const [isPending, startTransition] = useTransition();
+    
+    return (
+        <Button
+            type="button"
+            className="w-full"
+            disabled={isPending}
+            onClick={() => startTransition(async () => { 
+
+                const result = await updateOrderToPaidCOD(order.id);
+                toast(null, {
+                    description: result.message,
+                    style: {
+                        backgroundColor: !result.success ? 'var(--destructive)': '',
+                    }
+                });
+            })}
+        >
+            { isPending ? 'Processing...' : 'Mark as Paid'}
+        </Button>
+    );
+}
+
+
+const MarkAsDeliveredButton = () => {
+    const [isPending, startTransition] = useTransition();
+    
+    return (
+        <Button
+            type="button"
+            className="w-full"
+            disabled={isPending}
+            onClick={() => startTransition(async () => { 
+
+                const result = await deliverOrder(order.id);
+                toast(null, {
+                    description: result.message,
+                    style: {
+                        backgroundColor: !result.success ? 'var(--destructive)': '',
+                    }
+                });
+            })}
+        >
+          { isPending ? 'Processing...' : 'Mark as Delivered'}
+        </Button>
+    );
+}
+
     
 
   
@@ -169,6 +221,15 @@ const handleApprovePayPalOrder = async (data: { orderID: string; }) => {
                                       <PayPalButtons createOrder={handleCreatePayPalOrder} onApprove={handleApprovePayPalOrder} />
                                   </PayPalScriptProvider>
                               </div>
+                          )}
+
+                          {/* cash on delivery */}
+                          {isAdmin && !isPaid && paymentMethod === 'CashOnDelivery' && (
+                              <MarkAsPaidButton />
+                          )}
+
+                          {isAdmin && isPaid && !isDelivered && (
+                              <MarkAsDeliveredButton />
                           )}
                       </CardContent>
                   </Card>

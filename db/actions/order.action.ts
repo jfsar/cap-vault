@@ -361,3 +361,98 @@ export async function getOrderSummary() {
     salesData
   };
 }
+
+// get all orders
+export async function getAllOrders({
+  limit = PAGE_SIZE,
+  page,
+  query,
+}: {
+  limit?: number;
+  page: number;
+  query?: string;
+}) {
+  const queryFilter: Prisma.OrderWhereInput =
+    query && query !== 'all'
+      ? {
+          user: {
+            name: {
+              contains: query,
+              mode: 'insensitive',
+            } as Prisma.StringFilter,
+          },
+        }
+      : {};
+
+  const data = await prisma.order.findMany({
+    where: {
+      ...queryFilter,
+    },
+    orderBy: { createdAt: 'desc' },
+    take: limit,
+    skip: (page - 1) * limit,
+    include: { user: { select: { name: true } } },
+  });
+
+  const dataCount = await prisma.order.count();
+
+  return {
+    data,
+    totalPages: Math.ceil(dataCount / limit),
+  };
+}
+
+// delete order
+export async function deleteOrder(orderId: string) {
+  try {
+    await prisma.order.delete({
+      where: {
+        id: orderId
+      }
+    });
+
+    revalidatePath('/admin/orders');
+
+    return {
+      success: true,
+      message: 'Order deleted successfully'
+    };
+    
+  } catch (error) {
+    return formatErrors(error);
+  }
+}
+
+// update order COD to paid
+export async function updateOrderToPaidCOD(orderId: string) { 
+  try {
+    await updateOrderToPaid({ orderId: orderId });
+    revalidatePath(`/order/${orderId}`);
+    return { success: true, message: 'Order marked as paid.'};
+  } catch (error) {
+    return formatErrors(error);
+  }
+}
+
+// update COD to delivered
+export async function deliverOrder(orderId: string) { 
+  try {
+    const order = await prisma.order.findFirst({
+      where: { id: orderId}
+    });
+
+    if (!order) throw new Error('Order not found.');
+    if (!order.isPaid) throw new Error('Order is not paid.');
+    
+    await prisma.order.update({
+      where: { id: orderId },
+      data: { isDelivered: true, deliveredAt: new Date()}
+    });
+
+    revalidatePath(`/order/${orderId}`);
+    return { success: true, message: 'Order marked as delivered.' };
+    
+  } catch (error) {
+    return formatErrors(error);
+  }
+}
