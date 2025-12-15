@@ -45,7 +45,7 @@ async function AdminOrderPage({ searchParams }: { searchParams: Promise<{ page: 
                               <TableCell>{ order.isPaid && order.paidAt ? formatDateTime(order.paidAt!).dateTime : 'Not Paid'}</TableCell>
                               <TableCell>{order.isDelivered && order.deliveredAt ? formatDateTime(order.deliveredAt!).dateTime : 'Not Delivered'}</TableCell>
                               <TableCell className="flex gap-2 items-center">
-                                  <Button asChild variant="outline" size="icon"> 
+                                  <Button asChild variant="outline" size="sm"> 
                                     <Link href={`/order/${order.id}`}>
                                        <ArrowUpRight />
                                     </Link>

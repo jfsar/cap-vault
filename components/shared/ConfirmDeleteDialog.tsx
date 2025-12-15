@@ -46,7 +46,7 @@ function ConfirmDeleteDialog({ id, action }: { id: string; action: (id: string) 
               </AlertDialogHeader>
               <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <Button variant="destructive" disabled={isPending} onClick={handleDelete}>
+                  <Button  variant="destructive" disabled={isPending} onClick={handleDelete}>
                       { isPending ? 'Deleting...': 'Delete'}
                   </Button>
               </AlertDialogFooter>

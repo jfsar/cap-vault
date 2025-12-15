@@ -1,7 +1,7 @@
 'user sever';
 
 import prisma from '@/lib/prima-client';
-import { LATEST_PRODUCT_LIMIT } from '@/lib/constants';
+import { LATEST_PRODUCT_LIMIT, PAGE_SIZE } from '@/lib/constants';
 import { convertToPlainObject } from '@/lib/utils';
 
 export async function getLatestProducts() {
@@ -22,3 +22,23 @@ export async function getProductBySlug(slug: string) {
 
     return convertToPlainObject(product);
 }
+
+export async function getAllProducts({
+    query,
+    limit = PAGE_SIZE,
+    page,
+    category
+}: { query: string; limit?: number; page: number; category?: string; }) {
+
+    const data = await prisma.product.findMany({
+        skip: (page - 1) * limit,
+        take: limit
+    });
+
+    const dataCount = await prisma.product.count();
+
+    return {
+        data,
+        totalPages: Math.ceil(dataCount / limit)
+    };
+ }
