@@ -9,6 +9,7 @@ import {
     paymentResultSchema,
     shippingAddressSchema,
     signInSchema,
+    updateProductSchema,
     updateProfileSchema
 } from './validator'
 
@@ -44,3 +45,6 @@ export type SalesDataType = {
     month: string;
     totalSales: number;
 };
+
+export type InsertProductData = z.infer<typeof insertProductSchema>;
+export type UpdateProductData = z.infer<typeof updateProductSchema>;

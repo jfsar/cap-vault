@@ -1,9 +1,8 @@
 import ConfirmDeleteDialog from "@/components/shared/ConfirmDeleteDialog";
+import {  getAllProducts, deleteProduct } from "@/db/actions/product.action";
 import Pagination from "@/components/shared/Pagination";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { deleteOrder } from "@/db/actions/order.action";
-import { getAllProducts } from "@/db/actions/product.action";
 import { requireAdmin } from "@/lib/admin-auth-guard";
 import { formatId, formatPrice } from "@/lib/utils";
 import { Edit } from "lucide-react";
@@ -28,7 +27,7 @@ async function AdminProductsPage({ searchParams }: { searchParams: Promise<{ pag
       <div className="flex-between">
               <h1 className="h2-bold">Products</h1>
               <Button asChild variant="default">
-                  <Link href="/admin/product/create">Create Product</Link>
+                  <Link href="/admin/products/create">Create Product</Link>
               </Button>
       </div>
       <Table>
@@ -52,13 +51,13 @@ async function AdminProductsPage({ searchParams }: { searchParams: Promise<{ pag
                           <TableCell>{ product.category }</TableCell>
                           <TableCell>{ product.stock }</TableCell>
                           <TableCell>{String(product.rating)}</TableCell>
-                          <TableCell className="flex gap-1">
+                          <TableCell className="flex gap-2 items-center">
                                <Button asChild variant="outline" size="sm"> 
                                     <Link href={`/admin/products/${product.id}`}>
                                        <Edit />
                                     </Link>
                                 </Button>
-                                  <ConfirmDeleteDialog id={product.id} action={deleteOrder} />
+                                <ConfirmDeleteDialog id={product.id} action={deleteProduct} />
                           </TableCell>
                       </TableRow>
                   ))}
@@ -67,7 +66,8 @@ async function AdminProductsPage({ searchParams }: { searchParams: Promise<{ pag
       
       {products.totalPages > 1 && (
             <Pagination page={ Number(page) || 1} totalPages={products.totalPages}/>
-        )}
+      )}
+
     </div>
   )
 }
