@@ -14,6 +14,9 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { createProduct, updateProduct } from "@/db/actions/product.action";
 import { toast } from "sonner";
+import { Card, CardContent } from "../ui/card";
+import Image from "next/image";
+import { UploadButton } from "@/lib/uploadthing";
 
 type ProductFormProps =
   | {
@@ -43,11 +46,15 @@ function ProductForm({
   const schema = type === 'Create' ? insertProductSchema : updateProductSchema;
   const defaults = type === 'Update' ? product : productDefaultValues;
 
+ 
+
   const form = useForm<ProductFormValues>({
     //eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(schema) as any,
     defaultValues: defaults as ProductFormValues,
   });
+
+  const images = form.watch('images');
 
   const onSubmit: SubmitHandler<ProductFormValues> = async (values: ProductFormValues) => { 
     
@@ -199,7 +206,47 @@ function ProductForm({
                     />
         </div>
         <div className="upload-field flex flex-col md:flex-row gap-5">
-            {/* images */}
+                  {/* images */}
+                  <FormField
+                      name="images"
+                      control={form.control}
+                      render={() => (
+                          <FormItem className="w-full">
+                              <FormLabel htmlFor="name">Images</FormLabel>
+                              <Card>
+                                <CardContent className="mt-2 space-y-2 min-h-48">
+                                  <div className="flex-start space-x-2">
+                                    { images.map(image => (
+                                      <Image
+                                        key={image}
+                                        src={image}
+                                        alt='product-image'
+                                        className="w-20 h-20 object-cover object-center rounder-sm"
+                                        width={100}
+                                        height={100}
+                                      />
+                                    ))}
+                                    <FormControl>
+                                      <UploadButton 
+                                          endpoint="imageUploader" 
+                                          onClientUploadComplete={(res: {url: string}[]) => form.setValue('images', [...images, res[0].url]) } 
+                                          onUploadError={(error: Error) => {
+                                            toast.error(null, {
+                                              description: error.message,
+                                              style: {
+                                                backgroundColor: 'var(--destructive)',
+                                              }
+                                            })
+                                          } }
+                                      />
+                                    </FormControl>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                              <FormMessage />
+                          </FormItem>
+                      )}
+                  />
         </div>
         <div className="upload-field">
             {/* isFeatured */}
