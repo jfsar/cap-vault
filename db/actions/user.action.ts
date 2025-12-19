@@ -6,6 +6,8 @@ import { auth, signIn, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { formatErrors, hashedPassword } from "@/lib/utils";
 import { PaymentMethodType, ShippingAddress } from "@/types";
+import { PAGE_SIZE } from "@/lib/constants";
+import { revalidatePath } from "next/cache";
 
 
 export async function signInWithCredentials(prevState: unknown, formData: FormData) {
@@ -70,10 +72,6 @@ export async function getUserById(userId: string) {
             id: userId,
         }
     });
-
-    if (!user) {
-        throw new Error('User not found.');
-    }
     
     return user;
 }
@@ -172,4 +170,33 @@ export async function updateProfile(user: { name: string; email: string }) {
     }
 }
   
-export async function getAllUsers() { }
+export async function getAllUsers({ limit = PAGE_SIZE, page }: { limit?: number; page: number }) {
+    const data = await prisma.user.findMany({
+        orderBy: { createdAt: 'desc'},
+        take: limit,
+        skip: (page -1) * limit,
+    });
+
+    const dataCount = await prisma.user.count();
+
+    return {
+        data,
+        totalPages: Math.ceil(dataCount / limit),
+    };
+}
+ 
+export async function deleteUser(id: string) {
+    try {
+        await prisma.user.delete({
+            where: { id: id}
+        });
+        revalidatePath('/admin/users');
+        return {
+            success: true,
+            message: 'User deleted successfully.'
+        };
+
+    } catch (error) {
+        return formatErrors(error);
+    }
+ }
