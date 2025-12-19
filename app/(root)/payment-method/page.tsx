@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import PaymentMethodForm from "./PaymentMethodForm";
 import { getUserById } from "@/db/actions/user.action";
 import CheckOutSteps from "@/components/shared/CheckOutSteps";
+import { redirect } from "next/navigation";
 
 
 export const metadata: Metadata = {
@@ -17,6 +18,8 @@ async function PaymentMethodPage() {
   if(!userId) throw new Error('User not found.');
   
   const user = await getUserById(userId);
+  
+  if(!user) redirect('/sign-in');
   
   return (
       <>

@@ -24,6 +24,7 @@ async function PlaceOrderPage() {
   
   if(!userId) throw new Error('user not found.');
   const user = await getUserById(userId);
+  if(!user) redirect('/sign-in');
   if (!userId) redirect('/sign-in');
   
   if(!cart || cart.items.length === 0) redirect('/cart');

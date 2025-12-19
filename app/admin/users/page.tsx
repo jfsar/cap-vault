@@ -14,13 +14,23 @@ export const metadata: Metadata = {
     title: 'Admin Users'
 };
 
-async function AdminUserPage({ searchParams }: { searchParams: Promise<{ page: string }> }) {
-  const { page} = await searchParams;
-  const users = await getAllUsers({page: Number(page) || 1});
+async function AdminUserPage({ searchParams }: { searchParams: Promise<{ page: string; query: string; }> }) {
+  const { page, query: searchText } = await searchParams;
+  const users = await getAllUsers({page: Number(page) || 1, query: searchText});
   
   return (
     <div className="space-y-2">
-          <h2 className="h2-bold">Users</h2>
+          <div className="flex items-center gap-3 w-1/2">
+                 <h2 className="h2-bold">Users</h2>
+                 {searchText && (
+                    <div className="space-x-4">
+                       Filtered by: <i>&quot;{searchText}&quot;</i>
+                       <Link href="/admin/users">
+                          <Button variant="outline" size="sm">Remove Filter</Button>
+                       </Link>
+                    </div>
+                 )}
+          </div>
           <div className="overflow-x-auto">
               <Table>
                   <TableHeader>

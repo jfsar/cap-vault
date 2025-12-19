@@ -6,6 +6,7 @@ import { convertToPlainObject, formatErrors } from '@/lib/utils';
 import { revalidatePath } from 'next/cache';
 import { insertProductSchema, updateProductSchema } from '@/types/validator';
 import { InsertProductData, UpdateProductData } from '@/types';
+import { Prisma } from '@/lib/generated/prisma/client';
 
 export async function getLatestProducts() {
     const data = await prisma.product.findMany({
@@ -41,7 +42,21 @@ export async function getAllProducts({
     category
 }: { query: string; limit?: number; page: number; category?: string; }) {
 
+  // Query filter
+  const queryFilter: Prisma.ProductWhereInput =
+    query && query !== 'all'
+      ? {
+          name: {
+            contains: query,
+            mode: 'insensitive',
+          } as Prisma.StringFilter,
+        }
+      : {};
+
   const data = await prisma.product.findMany({
+        where: {
+          ...queryFilter,
+        },
         orderBy: { createdAt: 'desc'},
         skip: (page - 1) * limit,
         take: limit

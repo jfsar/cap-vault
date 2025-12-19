@@ -1,11 +1,13 @@
 import Menu from "@/components/shared/header/Menu";
 import Link from "next/link";
 import MainNav from "./MainNav";
-import { Input } from "@/components/ui/input";
+import AdminSearch from "@/components/admin/AdminSearch";
+import { Suspense } from "react";
+
 
 function AdminLayout({ children }: {children: React.ReactNode}) {
   return (
-    <>
+    <Suspense>
         <div className="flex flex-col h-screen">
             <div className="border-b container mx-auto">
                 <div className="flex wrapper items-center h-16 px-4">
@@ -15,7 +17,8 @@ function AdminLayout({ children }: {children: React.ReactNode}) {
                     <MainNav className="mx-6"/>
                     <div className="ml-auto items-center flex space-x-4">
                         <div>
-                            <Input type="search" placeholder="Search..." className="md:w-[100px] lg:w-[300px]"/>
+                              {/* admin search */}
+                              <AdminSearch />
                         </div>
                         <Menu />
                     </div>
@@ -25,7 +28,7 @@ function AdminLayout({ children }: {children: React.ReactNode}) {
                 { children }
             </div>
         </div>
-    </>
+    </Suspense>
   )
 }
 

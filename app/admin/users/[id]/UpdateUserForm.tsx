@@ -24,14 +24,41 @@ import {
 } from "@/components/ui/select";
 import { USER_ROLES } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
+import { updateUser } from "@/db/actions/user.action";
 
 function UpdateUserForm({ user }: { user: z.infer<typeof updateUserSchema> }) {
+
     const form = useForm<z.infer<typeof updateUserSchema>>({
         resolver: zodResolver(updateUserSchema),
         defaultValues: user,
     });
 
-    const onSubmit = async (values: z.infer<typeof updateUserSchema>) => {};
+    const router = useRouter();
+
+    const onSubmit = async (values: z.infer<typeof updateUserSchema>) => {
+        try {
+            const result = await updateUser({...values, id: user.id}); 
+            if (!result.success) {
+                return toast.error(null, {
+                    description: result.message,
+                    style: {
+                        backgroundColor: 'var(--destructive)',
+                    }
+                });
+            }
+
+            toast.success(null, { description: result.message });
+            form.reset();
+            router.push('/admin/users');
+        } catch (error) {
+            toast.error(null, {
+                description: (error as Error).message,
+                style: {
+                    backgroundColor: 'var(--destructive)',
+                }
+            });
+        }
+    };
 
     return (
         <Form {...form}>

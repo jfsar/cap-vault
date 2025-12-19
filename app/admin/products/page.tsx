@@ -24,8 +24,18 @@ async function AdminProductsPage({ searchParams }: { searchParams: Promise<{ pag
 
   return (
     <div className="space-y-2">
-      <div className="flex-between">
-              <h1 className="h2-bold">Products</h1>
+      <div className="flex-between w-full">
+              <div className="flex items-center gap-3 w-1/2">
+                 <h1 className="h2-bold">Products</h1>
+                 {searchText && (
+                    <div className="space-x-4">
+                       Filtered by: <i>&quot;{searchText}&quot;</i>
+                       <Link href="/admin/products">
+                          <Button variant="outline" size="sm">Remove Filter</Button>
+                       </Link>
+                    </div>
+                 )}
+              </div>
               <Button asChild variant="default">
                   <Link href="/admin/products/create">Create Product</Link>
               </Button>

@@ -23,6 +23,7 @@ async function ShippingAddressPage() {
   if(!userId) throw new Error("No user found.");
   
   const user = await getUserById(userId);
+  if(!user) redirect('/sign-in');
   
   return (
     <>
