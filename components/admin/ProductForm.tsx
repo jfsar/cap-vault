@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
 import { UploadButton } from "@/lib/uploadthing";
+import { Checkbox } from "../ui/checkbox";
 
 type ProductFormProps =
   | {
@@ -55,6 +56,8 @@ function ProductForm({
   });
 
   const images = form.watch('images');
+  const isFeatured = form.watch('isFeatured');
+  const banner = form.watch('banner');
 
   const onSubmit: SubmitHandler<ProductFormValues> = async (values: ProductFormValues) => { 
     
@@ -249,7 +252,47 @@ function ProductForm({
                   />
         </div>
         <div className="upload-field">
-            {/* isFeatured */}
+                 {/* isFeatured */}
+                 Featured Product
+                 <Card>
+                  <CardContent className="space-y-2 mt-2">
+                     <FormField 
+                         control={form.control} 
+                         name="isFeatured"
+                         render={({ field }) => (
+                           <FormItem className="space-x-2 flex items-center">
+                             <FormControl>
+                                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                             </FormControl>
+                             <FormLabel>Is Featured?</FormLabel>
+                           </FormItem>
+                         )}
+                     />
+                     {isFeatured && banner && (
+                        <Image 
+                             src={banner} 
+                             alt="banner" 
+                             width={1920} 
+                             height={680} 
+                             className="w-full object-cover object-center rounded-sm"
+                        />
+                     )}
+                     {isFeatured && !banner && (
+                       <UploadButton 
+                            endpoint="imageUploader" 
+                            onClientUploadComplete={(res: {url: string}[]) => form.setValue('banner', res[0].url) } 
+                            onUploadError={(error: Error) => {
+                              toast.error(null, {
+                                description: error.message,
+                                style: {
+                                   backgroundColor: 'var(--destructive)',
+                                }
+                              })
+                            }}
+                        />
+                     )}
+                  </CardContent>
+                 </Card>
         </div>
         <div>
                   {/* description */}

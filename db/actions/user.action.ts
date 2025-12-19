@@ -170,4 +170,6 @@ export async function updateProfile(user: { name: string; email: string }) {
     } catch (error) {
       return formatErrors(error);
     }
-  }
+}
+  
+export async function getAllUsers() { }
