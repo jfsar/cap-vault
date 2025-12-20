@@ -9,13 +9,23 @@ export const metadata: Metadata = {
 };
 
 async function AdminUpdateProductPage({ params }: { params: Promise<{ id: string; }> }) {
+
   const { id } = await params;
-  const product = await getProductById(id);
-  if(!product) notFound();
+
+  const productFromDb = await getProductById(id);
+
+  if (!productFromDb) notFound();
+
+  const product =  {
+      ...productFromDb,
+      price: productFromDb.price.toString(),
+      rating: productFromDb.rating.toString()
+  };
+  
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
           <h1 className="h2-bold">Update Product</h1>
-          <ProductForm type="Update" product={product as Product} productId={id} />
+          <ProductForm type="Update" product={product} productId={id} />
     </div>
   )
 }
