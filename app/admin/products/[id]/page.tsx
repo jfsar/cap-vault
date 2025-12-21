@@ -1,6 +1,5 @@
 import ProductForm from "@/components/admin/ProductForm";
 import { getProductById } from "@/db/actions/product.action";
-import { Product } from "@/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
