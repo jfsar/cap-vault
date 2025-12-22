@@ -1,17 +1,19 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { createOrUpdateReview, getReviewByProductId } from "@/db/actions/review.action";
 import { reviewFormDefaultValues } from "@/lib/constants";
 import { insertReviewSchema } from "@/types/validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Star } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 function ReviewForm({
@@ -21,23 +23,57 @@ function ReviewForm({
 }: {
     userId: string; 
     productId: string; 
-    onReviewSubmitted?: () => void;
+    onReviewSubmitted: () => void;
 }) {
   const [open, setOpen] = useState(false);
-    const form = useForm<z.infer<typeof insertReviewSchema>>({
+  const form = useForm<z.infer<typeof insertReviewSchema>>({
       //eslint-disable-next-line @typescript-eslint/no-explicit-any
       resolver: zodResolver(insertReviewSchema) as any,
       defaultValues: reviewFormDefaultValues,
   });
     
+  
+    const handleOpenForm = async () => {
+      
+      form.setValue('productId', productId);
+      
+      form.setValue('userId', userId);
+
+      const review = await getReviewByProductId({ productId });
+
+      if (review) {
+          form.setValue('title', review.title);
+          form.setValue('description', review.description);
+          form.setValue('rating', review.rating);
+      }
+      
+      setOpen(true);
+  }
+    
+  const onSubmit: SubmitHandler<z.infer<typeof insertReviewSchema>> = async (values) => {
+      const result = await createOrUpdateReview({ ...values, productId });
+      if (!result?.success) { 
+          return toast.error(null, {
+              description: result?.message,
+              style: {
+                  backgroundColor: 'var(--destructive)'
+              }
+          });
+      }
+
+      setOpen(false);
+
+      onReviewSubmitted();
+
+      toast.success(null, { description: result.message});
+  }
+  
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-            <Button variant="default">Write a Review</Button>
-        </DialogTrigger>
+            <Button variant="default" onClick={handleOpenForm}>Write a Review</Button>
         <DialogContent className="sm:max-w-[425px]">
               <Form {...form}>
-                  <form method="POST">
+                  <form method="POST" onSubmit={form.handleSubmit(onSubmit)}>
                       <DialogHeader>
                                 <DialogTitle>Write a Review</DialogTitle>
                                 <DialogDescription>Share your thoughts with other customers</DialogDescription>

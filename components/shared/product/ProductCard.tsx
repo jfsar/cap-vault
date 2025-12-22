@@ -4,6 +4,7 @@ import Link from "next/link";
 import ProductPrice from "./ProductPrice";
 import { formatPrice } from "@/lib/utils";
 import { Product } from "@/types";
+import Rating from "./Rating";
 
 function ProductCard({ product }: { product: Product; }) {
   return (
@@ -27,7 +28,7 @@ function ProductCard({ product }: { product: Product; }) {
             <h2 className="text-sm font-medium">{ product?.name }</h2>
          </Link>
          <div className="flex-between gap-4">
-            <p>{product?.rating} Stars</p>
+            <Rating value={Number(product.rating)}/>
             {product?.stock > 0 ? (
                 <ProductPrice value={formatPrice(parseInt(product?.price))}/>
             ) : (
@@ -39,4 +40,4 @@ function ProductCard({ product }: { product: Product; }) {
   )
 }
 
-export default ProductCard
+export default ProductCard;
