@@ -12,8 +12,19 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
+import StripePayment from "./StripePayment";
 
-function OrderDetailsTable({ order, paypalClientId, isAdmin }: { order: OrderType, paypalClientId: string; isAdmin?: boolean; }) {
+function OrderDetailsTable({
+    order,
+    paypalClientId,
+    isAdmin,
+    stripeClientSecret
+}: {
+    order: OrderType, 
+    paypalClientId: string; 
+    isAdmin?: boolean; 
+    stripeClientSecret: string | null;
+}) {
   const { 
       orderItems,
       shippingAddress,
@@ -221,6 +232,15 @@ const MarkAsDeliveredButton = () => {
                                       <PayPalButtons createOrder={handleCreatePayPalOrder} onApprove={handleApprovePayPalOrder} />
                                   </PayPalScriptProvider>
                               </div>
+                          )}
+
+                          {/* Stripe Payments */}
+                          {!isPaid && paymentMethod === "Stripe" && stripeClientSecret && (
+                              <StripePayment
+                                  priceInCents={Number(totalPrice) * 100}
+                                  orderId={order.id}
+                                  clientSecret={stripeClientSecret}
+                              />
                           )}
 
                           {/* cash on delivery */}

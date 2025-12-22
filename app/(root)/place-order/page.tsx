@@ -79,7 +79,7 @@ async function PlaceOrderPage() {
                                   {cart.items.map((item) => (
                                       <TableRow key={item.slug}>
                                           <TableCell>
-                                              <Link href={`/product/${item.image}`} className="flex items-center">
+                                              <Link href={`/product/${item.slug}`} className="flex items-center">
                                                   <Image
                                                       src={item.image}
                                                       alt={item.name}
