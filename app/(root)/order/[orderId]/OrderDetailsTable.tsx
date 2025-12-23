@@ -20,7 +20,7 @@ function OrderDetailsTable({
     isAdmin,
     stripeClientSecret
 }: {
-    order: OrderType, 
+    order: Omit<OrderType, 'paymentResult'>, 
     paypalClientId: string; 
     isAdmin?: boolean; 
     stripeClientSecret: string | null;

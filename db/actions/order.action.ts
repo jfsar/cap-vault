@@ -11,6 +11,7 @@ import { CartItem, PaymentResultType, SalesDataType, ShippingAddress } from "@/t
 import { paypal } from "@/lib/paypal";
 import { revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "@/lib/constants";
+import { sendPurchaseReceipt } from "@/email";
 
 // Create order and order items
 export async function createOrder() { 
@@ -274,13 +275,24 @@ export async function updateOrderToPaid({
 
   if (!updatedOrder) throw new Error('Order not found');
 
-//   sendPurchaseReceipt({
-//     order: {
-//       ...updatedOrder,
-//       shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
-//       paymentResult: updatedOrder.paymentResult as PaymentResultType,
-//     },
-//   });
+
+  sendPurchaseReceipt({
+    order: {
+      ...updatedOrder,
+      itemsPrice: updatedOrder.itemsPrice.toString(),
+      shippingPrice: updatedOrder.shippingPrice.toString(),
+      taxPrice: updatedOrder.taxPrice.toString(),
+      totalPrice: updatedOrder.totalPrice.toString(),
+      orderItems: updatedOrder.orderItems.map(item => { 
+        return {
+          ...item,
+          price: item.price.toString()
+        }
+      }),
+      shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
+      paymentResult: updatedOrder.paymentResult as PaymentResultType,
+    },
+  });
 }
 
 
