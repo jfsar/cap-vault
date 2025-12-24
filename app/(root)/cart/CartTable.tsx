@@ -21,10 +21,17 @@ function CartTable({ cart }: { cart?: Cart }) {
   
   return (
     <>
-      <h1 className="py-4 h2-bold">Shopping Cart</h1>
       { !cart || cart.items.length === 0 ? (
-        <div>Cart is empty. <Link href="/">Go Shopping</Link></div>
+        <div className="wrapper mx-auto flex flex-col items-center justify-center space-y-4 h-[calc(100vh-200px)]">
+            <h1 className="h1-bold text-4xl">Shopping Cart</h1>
+            <p className="text-muted-foreground">Your cart is empty</p>
+            <Button asChild>
+                <Link href="/">Continue Shopping</Link>
+            </Button>
+        </div>
       ) : (
+        <>
+        <h1 className="py-4 h2-bold">Shopping Cart</h1>
         <div className="grid md:grid-cols-4 md:gap-5">
             <div className="overflow-x-auto md:col-span-3">
                 <Table>
@@ -123,6 +130,7 @@ function CartTable({ cart }: { cart?: Cart }) {
                 </CardContent>
             </Card>
         </div>
+        </>
       )}
     </>
   )

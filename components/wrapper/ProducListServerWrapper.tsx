@@ -3,6 +3,8 @@ import React from 'react'
 import ProductList from '../shared/product/ProductList';
 import ProductCarousel from '../shared/product/ProductCarousel';
 import ViewAllProductsButton from '../ViewAllProductsButton';
+import IconBoxes from '../IconBoxes';
+import DealCountDown from '../DealCountDown';
 
 async function ProducListServerWrapper() {
   const latestProducts = await getLatestProducts();
@@ -30,8 +32,10 @@ async function ProducListServerWrapper() {
             featuredProducts.length > 0 && 
             <ProductCarousel data={featuredProducts} />
           }
-          <ProductList title='New Arrivals' data={transformValues} limit={4}/>
+          <ProductList title='Products' data={transformValues} limit={4}/>
           <ViewAllProductsButton />
+          <DealCountDown />
+          <IconBoxes />
       </>
   )
 }
