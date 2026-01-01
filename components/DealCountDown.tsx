@@ -112,7 +112,7 @@ function DealCountDown() {
                     <StatBox label='Minutes' value={time?.minutes ?? 0} />
                     <StatBox label='Seconds' value={time?.seconds ?? 0} />
                 </ul>
-                <div className='text-center'>
+                <div className='text-center mb-5 md:mb-0'>
                     <Button asChild>
                         <Link href='/search'>View Products</Link>
                     </Button>
