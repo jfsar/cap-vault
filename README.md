@@ -9,23 +9,23 @@ This project is designed for learning and portfolio demonstration purposes. It u
 
 ---
 
-## 📋 Table of Contents
+## 📋 <a name="table">Table of Contents</a>
 
 - [Features](#features)
-- [Limitations](#limitations)
-- [Tech Stack](#tech-stack)
+- [Limitations](#️limitations)
+- [Tech Stack](#️tech-stack)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Environment Variables](#environment-variables)
-- [Database Setup](#database-setup)
+- [Database Setup](#️database-setup)
 - [Running the Project](#running-the-project)
-- [Project Structure](#project-structure)
 - [Screenshots](#screenshots)
 - [Author](#author)
+- [Contact](#contact)
 
 ---
 
-## ✨ Features
+## <a name="features">✨ Features</a>
 
 ### Customer Features
 
@@ -52,7 +52,7 @@ This project is designed for learning and portfolio demonstration purposes. It u
 
 ---
 
-## ⚠️ Limitations
+## <a name="limitations">⚠️ Limitations</a>
 
 Please be aware of the following limitations in this educational project:
 
@@ -73,7 +73,7 @@ Please be aware of the following limitations in this educational project:
 
 ---
 
-## 🛠️ Tech Stack
+## <a name="tech-stack">🛠️ Tech Stack</a>
 
 - **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
 - **Language**: TypeScript
@@ -91,7 +91,7 @@ Please be aware of the following limitations in this educational project:
 
 ---
 
-## 📦 Prerequisites
+## <a name="prerequisites">📦 Prerequisites</a>
 
 Before you begin, ensure you have the following installed:
 
@@ -106,7 +106,7 @@ Before you begin, ensure you have the following installed:
 
 ---
 
-## 🚀 Installation
+## <a name="installation">🚀 Installation</a>
 
 ### 1. Clone the Repository
 
@@ -129,7 +129,7 @@ Create a `.env.local` file in the root directory and add the required environmen
 
 ---
 
-## 🔐 Environment Variables
+## <a name="environment-variables">🔐 Environment Variables</a>
 
 Create a `.env.local` file in the root of your project and add the following variables:
 
@@ -181,7 +181,7 @@ USER_ROLES="admin, user"
 
 ---
 
-## 🗄️ Database Setup
+## <a name="database-setup">🗄️ Database Setup</a>
 
 ### Option 1: Using Neon Database (Recommended)
 
@@ -221,7 +221,7 @@ npx prisma studio
 
 ---
 
-## 🏃 Running the Project
+## <a name="running-the-project">🏃 Running the Project</a>
 
 ### Development Mode
 
@@ -251,47 +251,47 @@ npm start
 
 ---
 
-## 📸 Screenshots
+## <a name="screenshots">📸 Screenshots</a>
 
 ### Homepage
 
-![Homepage](./screenshots/homepage.png)
+![Homepage](/screenshots/homepage.png)
 
 ### Product Listing
 
-![Product Listing](./screenshots/products.png)
+![Product Listing](/screenshots/products.png)
 
 ### Product Page
 
-![Product Page](./screenshots/product.png)
+![Product Page](/screenshots/product.png)
 
 ### Shopping Cart
 
-![Shopping Cart](./screenshots/cart.png)
+![Shopping Cart](/screenshots/cart.png)
 
 ### Checkout & Payment
 
-![Shipping Address](./screenshots/address.png)
+![Shipping Address](/screenshots/address.png)
 
-![Payment Method](./screenshots/payment.png)
+![Payment Method](/screenshots/payment.png)
 
-![Place Order](./screenshots/place-order.png)
+![Place Order](/screenshots/place-order.png)
 
-![PayPal Checkout](./screenshots/checkout-1.png)
+![PayPal Checkout](/screenshots/checkout-1.png)
 
-![Stripe Checkout](./screenshots/checkout-2.png)
+![Stripe Checkout](/screenshots/checkout-2.png)
 
 ### Admin Dashboard
 
-![Admin Dashboard](./screenshots/admin.png)
+![Admin Dashboard](/screenshots/admin.png)
 
 ### Order Management
 
-![Order Management](./screenshots/orders.png)
+![Order Management](/screenshots/orders.png)
 
 ---
 
-## 👤 Author
+## <a name="author">👤 Author</a>
 
 **John Sarmiento**
 
@@ -300,7 +300,7 @@ npm start
 
 ---
 
-## 🙏 Contact
+## <a name="contact">🙏 Contact</a>
 
 For questions or feedback, please open an issue on GitHub or contact the author directly.
 
