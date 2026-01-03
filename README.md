@@ -37,7 +37,7 @@ This project is designed for learning and portfolio demonstration purposes. It u
   - PayPal
   - Cash on Delivery
 - **Order Management** - View order history
-- **Email Invoices** - Automatic invoice generation and delivery after successful payment
+- **Email Purchase Receipts** - Automatic purchase receipt generation and delivery after successful payment
 - **Product Reviews** - Read and write product reviews with ratings
 - **Profile Management** - Update personal information and preferences
 
@@ -57,7 +57,7 @@ Please be aware of the following limitations in this educational project:
 
 ### Email Service (Resend)
 
-- **Free Tier Restriction**: Invoices can only be sent to email addresses that are registered and verified in your Resend account
+- **Free Tier Restriction**: Purchase receipts can only be sent to email addresses that are registered and verified in your Resend account
 - For testing, you'll need to verify recipient email addresses in your Resend dashboard
 
 ### Payment Processing
