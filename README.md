@@ -274,7 +274,7 @@ npm start
 
 ### Payment Method
 
-![Payment Method](./screenshots/payment.png)
+![Payment Method](./screenshots/paymen.png)
 
 ### Place Order
 
