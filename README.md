@@ -9,23 +9,22 @@ This project is designed for learning and portfolio demonstration purposes. It u
 
 ---
 
-## 📋 <a name="table">Table of Contents</a>
+## 📋 Table of Contents
 
-- [Features](#features)
-- [Limitations](#️limitations)
-- [Tech Stack](#️tech-stack)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Environment Variables](#environment-variables)
-- [Database Setup](#️database-setup)
-- [Running the Project](#running-the-project)
-- [Screenshots](#screenshots)
-- [Author](#author)
-- [Contact](#contact)
+1. ✨ [Features](#features)
+2. ⚠️ [Limitations](#limitations)
+3. 🛠️ [Tech Stack](#tech-stack)
+4. 📦 [Prerequisites](#prerequisites)
+5. 🚀 [Installation](#installation)
+6. 🔐 [Environment Variables](#environment-variables)
+7. 🗄️ [Database Setup](#database-setup)
+8. 🏃 [Running the Project](#running-the-project)
+9. 📸 [Screenshots](#screenshots)
+10. 👤 [Author](#author)
 
 ---
 
-## <a name="features">✨ Features</a>
+## Features
 
 ### Customer Features
 
@@ -52,7 +51,7 @@ This project is designed for learning and portfolio demonstration purposes. It u
 
 ---
 
-## <a name="limitations">⚠️ Limitations</a>
+## Limitations
 
 Please be aware of the following limitations in this educational project:
 
@@ -73,7 +72,7 @@ Please be aware of the following limitations in this educational project:
 
 ---
 
-## <a name="tech-stack">🛠️ Tech Stack</a>
+## Tech Stack
 
 - **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
 - **Language**: TypeScript
@@ -91,7 +90,7 @@ Please be aware of the following limitations in this educational project:
 
 ---
 
-## <a name="prerequisites">📦 Prerequisites</a>
+## Prerequisites
 
 Before you begin, ensure you have the following installed:
 
@@ -106,7 +105,7 @@ Before you begin, ensure you have the following installed:
 
 ---
 
-## <a name="installation">🚀 Installation</a>
+## Installation
 
 ### 1. Clone the Repository
 
@@ -129,7 +128,7 @@ Create a `.env.local` file in the root directory and add the required environmen
 
 ---
 
-## <a name="environment-variables">🔐 Environment Variables</a>
+## Environment Variables
 
 Create a `.env.local` file in the root of your project and add the following variables:
 
@@ -181,7 +180,7 @@ USER_ROLES="admin, user"
 
 ---
 
-## <a name="database-setup">🗄️ Database Setup</a>
+## Database Setup
 
 ### Option 1: Using Neon Database (Recommended)
 
@@ -221,7 +220,7 @@ npx prisma studio
 
 ---
 
-## <a name="running-the-project">🏃 Running the Project</a>
+## Running the Project
 
 ### Development Mode
 
@@ -251,47 +250,55 @@ npm start
 
 ---
 
-## <a name="screenshots">📸 Screenshots</a>
+## Screenshots
 
 ### Homepage
 
-![Homepage](/screenshots/homepage.png)
+![Homepage](./screenshots/homepage.png)
 
 ### Product Listing
 
-![Product Listing](/screenshots/products.png)
+![Product Listing](./screenshots/products.png)
 
 ### Product Page
 
-![Product Page](/screenshots/product.png)
+![Product Page](./screenshots/product.png)
 
 ### Shopping Cart
 
-![Shopping Cart](/screenshots/cart.png)
+![Shopping Cart](./screenshots/cart.png)
 
-### Checkout & Payment
+### Shipping Address
 
-![Shipping Address](/screenshots/address.png)
+![Shipping Address](./screenshots/address.png)
 
-![Payment Method](/screenshots/payment.png)
+### Payment Method
 
-![Place Order](/screenshots/place-order.png)
+![Payment Method](./screenshots/payment.png)
 
-![PayPal Checkout](/screenshots/checkout-1.png)
+### Place Order
 
-![Stripe Checkout](/screenshots/checkout-2.png)
+![Place Order](./screenshots/place-order.png)
+
+### PayPal Checkout
+
+![PayPal Checkout](./screenshots/checkout-1.png)
+
+### Stripe Checkout
+
+![Stripe Checkout](./screenshots/checkout-2.png)
 
 ### Admin Dashboard
 
-![Admin Dashboard](/screenshots/admin.png)
+![Admin Dashboard](./screenshots/admin.png)
 
 ### Order Management
 
-![Order Management](/screenshots/orders.png)
+![Order Management](./screenshots/orders.png)
 
 ---
 
-## <a name="author">👤 Author</a>
+## Author
 
 **John Sarmiento**
 
@@ -300,7 +307,7 @@ npm start
 
 ---
 
-## <a name="contact">🙏 Contact</a>
+## Contact
 
 For questions or feedback, please open an issue on GitHub or contact the author directly.
 
