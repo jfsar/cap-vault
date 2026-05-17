@@ -4,7 +4,6 @@ import ProductList from '../shared/product/ProductList';
 import ProductCarousel from '../shared/product/ProductCarousel';
 import ViewAllProductsButton from '../ViewAllProductsButton';
 import IconBoxes from '../IconBoxes';
-import DealCountDown from '../DealCountDown';
 
 async function ProducListServerWrapper() {
   const latestProducts = await getLatestProducts();
@@ -34,7 +33,6 @@ async function ProducListServerWrapper() {
           }
           <ProductList title='Products' data={transformValues} limit={4}/>
           <ViewAllProductsButton />
-          <DealCountDown />
           <IconBoxes />
       </>
   )
