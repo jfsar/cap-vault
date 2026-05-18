@@ -1,9 +1,5 @@
 import { APP_NAME } from "@/lib/constants";
-import LinkedIn from "./icons/LinkedInIcon";
-import Github from "./icons/GithubIcon";
 import Link from "next/link";
-import { MailIcon } from "lucide-react";
-import EmailIcon from "./icons/EmailIcon";
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -14,14 +10,13 @@ function Footer() {
               <p className="text-muted-foreground text-sm">&copy; {currentYear} { APP_NAME }. All Rights Reserved.</p>
             </div>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 text-sm">
                   <Link className="opacity-75 hover:opacity-100" href="https://www.linkedin.com/in/srmntz/" target="_blank">
-                      <LinkedIn className="w-5 h-5" />
+                      LinkedIn
                   </Link>
                   <Link className="opacity-75 hover:opacity-100" href="https://github.com/jfsar" target="_blank">
-                      <Github className="w-5 h-5" />
+                      GitHub
                   </Link>
-                  <EmailIcon />
             </div>
       </div>
     </footer>
