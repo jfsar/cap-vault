@@ -12,7 +12,6 @@ function Header() {
     <header className='w-full border-b'>
         <div className='wrapper flex-between'>
             <div className='flex-start'>
-                <CategoryDrawer />
                 <Link href='/' className='flex-start space-x-2 ml-5'> 
                       <Image
                           src="/images/logo.svg"
