@@ -1,3 +1,4 @@
+// @ts-ignore: importing global CSS side-effect in layout
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
