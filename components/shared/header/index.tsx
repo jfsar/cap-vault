@@ -2,7 +2,6 @@
 import Link from 'next/link';
 
 import Menu from './Menu';
-import CategoryDrawer from './CategoryDrawer';
 import Image from 'next/image';
 import Search from './Search';
 
