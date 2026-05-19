@@ -1,0 +1,7 @@
+﻿refactor: extract constants and improve footer, remove CategoryDrawer
+
+- Extract CURRENT_YEAR and SOCIAL_LINKS as module-level constants in Footer
+- Refactor social links rendering to use .map() for better maintainability
+- Add rel="noopener noreferrer" to external links for security
+- Remove CategoryDrawer component from header
+- Clean up formatting and trailing issues
