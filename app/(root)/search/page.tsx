@@ -168,7 +168,7 @@ async function SearchPage({
       {/* ── Sidebar Filters ── */}
       <aside
         aria-label="Product filters"
-        className="filter-links sticky top-20 self-start"
+        className="filter-links md:sticky md:top-20 md:self-start"
       >
         {/* Category */}
         <div className="text-xl mb-2 mt-3" id="category-filter-label">
@@ -311,8 +311,8 @@ async function SearchPage({
         {/* Product Grid */}
         {products.length > 0 ? (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {products.map((product, index) => (
+              <ProductCard key={product.id} product={product} priority={index < 3} />
             ))}
           </div>
         ) : (
