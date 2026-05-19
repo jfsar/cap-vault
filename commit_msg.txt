@@ -1,21 +1,11 @@
-﻿refactor: improve search page with validation, accessibility, and performance optimizations
+﻿refactor: improve layout styling and code formatting
 
-CHANGES:
-- Extract filter constants (PRICES, RATINGS, SORT_ORDERS) with validation sets
-- Create parseAndValidateParams() for secure input handling and sanitization
-- Implement React cache() for categories and parallel data fetching with Promise.all()
-- Add comprehensive ARIA labels and aria-current attributes for accessibility
-- Refactor filter URL builder into buildFilterUrl() helper function
-- Display active filters as visual badges instead of inline text
-- Improve empty state messaging with contextual guidance
-- Add full pagination UI with prev/next navigation and page buttons
-- Enhance sidebar filters with sticky positioning for better UX
-- Make header sticky in root layout with min-h-screen height and z-50 stacking
-- Add TypeScript ignore comment for CSS side-effect import
+- Add Tailwind theme classes (bg-background, text-foreground) to main layout wrapper and header for consistent color system integration
+- Remove border-b from header component and update border styling in root layout
+- Fix JSX formatting with consistent indentation and spacing throughout both files
+- Remove unnecessary blank lines and consolidate code structure
+- Improve overall code readability and maintainability
 
-BENEFITS:
-- Enhanced security through input validation and HTML injection prevention
-- Better performance with parallel requests and response caching
-- Improved accessibility following WCAG guidelines
-- Cleaner UI with better visual feedback and pagination controls
-- More maintainable code with extracted utilities and constants
+Files changed:
+- app/(root)/layout.tsx
+- components/shared/header/index.tsx
